@@ -3,8 +3,6 @@ require("dotenv").config()
 const asyncHandler = require('express-async-handler')
 const Shipping = require('../models/shipping')
 const shippingRoute = express.Router();
-const URL = 'http://localhost:7000/shipment/';
-const axios = require('axios');
 const shipment = require('../models/shipping');
 
 
@@ -16,7 +14,6 @@ shippingRoute.post('/createShippment/:id',asyncHandler(async(req,res) =>{
     if(ShipmentExists){
         res.status(505);
         res.send("The Shippment Already Exists");
-       // throw new Error("This Shipment Already Exists");
     }
     else{
         const createShippment = await Shipping.create({Status: "Created",OrderId: req.params.id, Destination: "Delivered" })
@@ -26,6 +23,21 @@ shippingRoute.post('/createShippment/:id',asyncHandler(async(req,res) =>{
     }
     
 }))
+
+shippingRoute.get('/:id',asyncHandler(async(req,res) =>{
+    const ShipmentExists = await Shipping.findOne({OrderId: req.params.id})
+
+    if(!ShipmentExists){
+        res.status(505);
+        res.send("The Shippment Doesn't Exists");
+       
+    }
+    else{
+        res.send(ShipmentExists)
+    }
+}))
+
+
 shippingRoute.patch('/updateStatus/:id',asyncHandler(async(req,res)=>{
     const ShipmentExists = await Shipping.findOne({_id: req.params.id})
     const updates = req.body;
