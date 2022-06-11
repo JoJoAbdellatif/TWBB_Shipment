@@ -39,7 +39,7 @@ shippingRoute.get('/:id',asyncHandler(async(req,res) =>{
 
 
 shippingRoute.patch('/updateStatus/:id',asyncHandler(async(req,res)=>{
-    const ShipmentExists = await Shipping.findOne({_id: req.params.id})
+    const ShipmentExists = await Shipping.findOne({OrderId: req.params.id})
     const updates = req.body;
 
     if(!ShipmentExists){
@@ -47,7 +47,7 @@ shippingRoute.patch('/updateStatus/:id',asyncHandler(async(req,res)=>{
 
     }
     else{
-        shipment.updateOne({_id: req.params.id},{$set:updates})
+        shipment.updateOne({OrderId: req.params.id},{$set:updates})
         .then(result => {
             res.status(200).json(result)
             
