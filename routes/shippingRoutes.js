@@ -27,15 +27,14 @@ shippingRoute.post('/createShippment/:id',asyncHandler(async(req,res) =>{
 shippingRoute.get('/:id',asyncHandler(async(req,res) =>{
     const ShipmentExists = await Shipping.findOne({OrderId: req.params.id})
 
-    // if(!ShipmentExists){
-    //     res.status(505);
-    //     res.send("The Shippment Doesn't Exists");
+    if(!ShipmentExists){
+        res.status(505);
+        res.send("The Shippment Doesn't Exists");
        
-    // }
-    // else{
-    //     res.send(ShipmentExists)
-    // }
-    res.send(ShipmentExists)
+    }
+    else{
+        res.send(ShipmentExists)
+    }
 }))
 
 
